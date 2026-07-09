@@ -1,15 +1,11 @@
 "use client"
 
 import * as React from "react"
-import {
-  LayoutDashboard,
-  CheckSquare,
-  Calendar,
-  Settings,
-} from "lucide-react"
 import { Link } from "react-router-dom"
-import { Logo } from "@/components/logo"
 
+import "@/config/modules"
+import { navGroups } from "@/core/modules"
+import { Logo } from "@/components/logo"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -22,70 +18,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const data = {
-  user: {
-    name: "David",
-    email: "david@davidos.app",
-    avatar: "",
-  },
-  navGroups: [
-    {
-      label: "Overview",
-      items: [
-        {
-          title: "Mission Control",
-          url: "/dashboard",
-          icon: LayoutDashboard,
-        },
-      ],
-    },
-    {
-      label: "Work",
-      items: [
-        {
-          title: "Tasks",
-          url: "/tasks",
-          icon: CheckSquare,
-        },
-        {
-          title: "Calendar",
-          url: "/calendar",
-          icon: Calendar,
-        },
-      ],
-    },
-    {
-      label: "System",
-      items: [
-        {
-          title: "Settings",
-          url: "#",
-          icon: Settings,
-          items: [
-            {
-              title: "Profile",
-              url: "/settings/user",
-            },
-            {
-              title: "Account",
-              url: "/settings/account",
-            },
-            {
-              title: "Appearance",
-              url: "/settings/appearance",
-            },
-            {
-              title: "Notifications",
-              url: "/settings/notifications",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+const user = {
+  name: "David",
+  email: "david@davidos.app",
+  avatar: "",
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const groups = navGroups()
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -106,12 +47,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {data.navGroups.map((group) => (
+        {groups.map((group) => (
           <NavMain key={group.label} label={group.label} items={group.items} />
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

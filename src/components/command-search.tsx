@@ -3,18 +3,10 @@
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
 import { Command as CommandPrimitive } from "cmdk"
-import {
-  Search,
-  LayoutDashboard,
-  CheckSquare,
-  Calendar,
-  Settings,
-  User,
-  Bell,
-  Palette,
-  type LucideIcon,
-} from "lucide-react"
+import { Search } from "lucide-react"
 
+import "@/config/modules"
+import { allCommands, executeCommand, type CommandDef } from "@/core/commands"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
@@ -102,13 +94,6 @@ const CommandItem = React.forwardRef<
 ))
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
-interface SearchItem {
-  title: string
-  url: string
-  group: string
-  icon?: LucideIcon
-}
-
 interface CommandSearchProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -118,31 +103,18 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
   const navigate = useNavigate()
   const commandRef = React.useRef<HTMLDivElement>(null)
 
-  const searchItems: SearchItem[] = [
-    // Overview
-    { title: "Mission Control", url: "/dashboard", group: "Overview", icon: LayoutDashboard },
-
-    // Work
-    { title: "Tasks", url: "/tasks", group: "Work", icon: CheckSquare },
-    { title: "Calendar", url: "/calendar", group: "Work", icon: Calendar },
-
-    // Settings
-    { title: "Profile", url: "/settings/user", group: "Settings", icon: User },
-    { title: "Account", url: "/settings/account", group: "Settings", icon: Settings },
-    { title: "Appearance", url: "/settings/appearance", group: "Settings", icon: Palette },
-    { title: "Notifications", url: "/settings/notifications", group: "Settings", icon: Bell },
-  ]
-
-  const groupedItems = searchItems.reduce((acc, item) => {
-    if (!acc[item.group]) {
-      acc[item.group] = []
+  // The palette is a view over the Command Engine registry (ADR-014).
+  // Phase 4 rebuilds this surface with entity search results and actions.
+  const groupedItems = allCommands().reduce((acc, command) => {
+    if (!acc[command.group]) {
+      acc[command.group] = []
     }
-    acc[item.group].push(item)
+    acc[command.group].push(command)
     return acc
-  }, {} as Record<string, SearchItem[]>)
+  }, {} as Record<string, CommandDef[]>)
 
-  const handleSelect = (url: string) => {
-    navigate(url)
+  const handleSelect = (commandId: string) => {
+    void executeCommand(commandId, { navigate })
     onOpenChange(false)
     // Bounce effect like Vercel
     if (commandRef.current) {
@@ -172,9 +144,9 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
                   const Icon = item.icon
                   return (
                     <CommandItem
-                      key={item.url}
+                      key={item.id}
                       value={item.title}
-                      onSelect={() => handleSelect(item.url)}
+                      onSelect={() => handleSelect(item.id)}
                     >
                       {Icon && <Icon className="mr-2 h-4 w-4" />}
                       {item.title}

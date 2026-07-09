@@ -1,19 +1,10 @@
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
 
-// Lazy load components for better performance
-const Dashboard = lazy(() => import('@/app/dashboard/page'))
-const Tasks = lazy(() => import('@/app/tasks/page'))
-const Calendar = lazy(() => import('@/app/calendar/page'))
+import '@/config/modules'
+import { moduleRoutes } from '@/core/modules'
 
-// Error pages
 const NotFound = lazy(() => import('@/app/errors/not-found/page'))
-
-// Settings pages
-const UserSettings = lazy(() => import('@/app/settings/user/page'))
-const AccountSettings = lazy(() => import('@/app/settings/account/page'))
-const AppearanceSettings = lazy(() => import('@/app/settings/appearance/page'))
-const NotificationSettings = lazy(() => import('@/app/settings/notifications/page'))
 
 export interface RouteConfig {
   path: string
@@ -21,51 +12,19 @@ export interface RouteConfig {
   children?: RouteConfig[]
 }
 
+/**
+ * Route table assembled from the module registry. Only the root redirect
+ * and the 404 catch-all live outside module manifests.
+ */
 export const routes: RouteConfig[] = [
-  // Default route - redirect to mission control
   // Use relative path "dashboard" instead of "/dashboard" for basename compatibility
   {
-    path: "/",
-    element: <Navigate to="dashboard" replace />
+    path: '/',
+    element: <Navigate to="dashboard" replace />,
   },
-
-  // Mission Control
+  ...moduleRoutes(),
   {
-    path: "/dashboard",
-    element: <Dashboard />
+    path: '*',
+    element: <NotFound />,
   },
-
-  // Application Routes
-  {
-    path: "/tasks",
-    element: <Tasks />
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />
-  },
-
-  // Settings Routes
-  {
-    path: "/settings/user",
-    element: <UserSettings />
-  },
-  {
-    path: "/settings/account",
-    element: <AccountSettings />
-  },
-  {
-    path: "/settings/appearance",
-    element: <AppearanceSettings />
-  },
-  {
-    path: "/settings/notifications",
-    element: <NotificationSettings />
-  },
-
-  // Catch-all route for 404
-  {
-    path: "*",
-    element: <NotFound />
-  }
 ]
