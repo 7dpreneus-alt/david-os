@@ -6,7 +6,7 @@ import { Command as CommandPrimitive } from "cmdk"
 import { Search } from "lucide-react"
 
 import "@/config/modules"
-import { allCommands, executeCommand, type CommandDef } from "@/core/commands"
+import { allCommands, queryCommands, type CommandDef } from "@/core/commands"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
@@ -102,19 +102,50 @@ interface CommandSearchProps {
 export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
   const navigate = useNavigate()
   const commandRef = React.useRef<HTMLDivElement>(null)
+  const [query, setQuery] = React.useState("")
+  const [dynamicCommands, setDynamicCommands] = React.useState<CommandDef[]>([])
 
-  // The palette is a view over the Command Engine registry (ADR-014).
-  // Phase 4 rebuilds this surface with entity search results and actions.
-  const groupedItems = allCommands().reduce((acc, command) => {
-    if (!acc[command.group]) {
-      acc[command.group] = []
+  React.useEffect(() => {
+    if (!open) {
+      setQuery("")
+      setDynamicCommands([])
     }
-    acc[command.group].push(command)
-    return acc
-  }, {} as Record<string, CommandDef[]>)
+  }, [open])
+
+  // Provider results are async (repositories, future remote sources); the
+  // engine normalizes them, the palette just renders the latest batch.
+  React.useEffect(() => {
+    if (!open) return
+    let cancelled = false
+    void queryCommands(query).then((commands) => {
+      if (!cancelled) setDynamicCommands(commands)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [query, open])
+
+  // The palette is a view over the Command Engine registry (ADR-014):
+  // static commands + query-time provider commands, grouped for display.
+  // Phase 4 layers full universal search onto this same surface.
+  const commandById = new Map<string, CommandDef>()
+  const groupedItems = [...allCommands(), ...dynamicCommands].reduce(
+    (acc, command) => {
+      commandById.set(command.id, command)
+      if (!acc[command.group]) {
+        acc[command.group] = []
+      }
+      acc[command.group].push(command)
+      return acc
+    },
+    {} as Record<string, CommandDef[]>
+  )
 
   const handleSelect = (commandId: string) => {
-    void executeCommand(commandId, { navigate })
+    const command = commandById.get(commandId)
+    if (command) {
+      void command.run({ navigate })
+    }
     onOpenChange(false)
     // Bounce effect like Vercel
     if (commandRef.current) {
@@ -135,7 +166,12 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
           ref={commandRef}
           className="transition-transform duration-100 ease-out"
         >
-          <CommandInput placeholder="What do you need?" autoFocus />
+          <CommandInput
+            placeholder="What do you need?"
+            autoFocus
+            value={query}
+            onValueChange={setQuery}
+          />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             {Object.entries(groupedItems).map(([group, items]) => (

@@ -1,6 +1,11 @@
-import { registerCommands, type CommandDef } from '@/core/commands'
+import {
+  registerCommandProvider,
+  registerCommands,
+  type CommandDef,
+} from '@/core/commands'
 import { registerEntityTypes } from '@/core/entities'
 import { events } from '@/core/events'
+import { registerWidgets } from '@/core/widgets'
 import type { ModuleManifest, ModuleRoute, NavItem } from './types'
 
 const modules = new Map<string, ModuleManifest>()
@@ -21,6 +26,12 @@ export function registerModules(manifests: ModuleManifest[]): void {
       registerCommands(manifest.commands)
     }
     registerCommands(navigationCommandsFor(manifest))
+    for (const provider of manifest.commandProviders ?? []) {
+      registerCommandProvider(provider)
+    }
+    if (manifest.widgets?.length) {
+      registerWidgets(manifest.widgets)
+    }
     for (const subscription of manifest.events ?? []) {
       events.on(subscription.event, subscription.handler)
     }

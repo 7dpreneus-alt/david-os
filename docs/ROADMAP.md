@@ -9,7 +9,7 @@ Migration from the ShadcnStore dashboard template to DavidOS, revised for the mo
 - Kept: dashboard placeholder, tasks, calendar, settings, 404, shadcn/ui library, theme customizer, layouts.
 - Product docs written (VISION, PRD, ARCHITECTURE, ROADMAP, DESIGN_SYSTEM, DECISIONS).
 
-## Phase 1 — Kernel foundations 🔜
+## Phase 1 — Kernel foundations ✅
 
 Primitives:
 - `core/events`: typed event bus.
@@ -25,9 +25,14 @@ Engine skeletons (registries + types now; full UIs in later phases):
 
 **Exit criteria:** adding a stub module (manifest + one route + one command) requires zero core edits; all persistence flows through the adapter; every repository mutation produces an activity record.
 
-## Phase 2 — Core domain modules
+## Phase 2 — Core domain modules 🔄 (Tasks ✅)
 
-Order: **Tasks → Projects → Notes → Goals → Documents.**
+Order: **Tasks ✅ → Projects → Notes → Goals → Documents.**
+
+Kernel extensions landed with Tasks (domain-agnostic, for every future
+module): async-capable **command providers** (dynamic entity-backed palette
+commands) and the **widget definition registry** (metadata + renderer
+reference only; instances stay workspace-owned per ADR-012).
 
 For each: manifest, Zod schema + entity-type registration, repository-backed Zustand store, CRUD UI, links via the entity graph, domain events, search extractor, palette commands ("new task…"), and widget definitions (consumed in Phase 3).
 

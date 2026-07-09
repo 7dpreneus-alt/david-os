@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 
-import type { CommandDef } from '@/core/commands'
+import type { CommandDef, CommandProvider } from '@/core/commands'
 import type { EntityTypeDef } from '@/core/entities'
 import type { EventHandler } from '@/core/events'
 import type { WidgetDef } from '@/core/widgets/types'
@@ -47,6 +47,8 @@ export interface ModuleManifest {
   /** Sidebar entries. Navigation commands are generated from these. */
   navItems: NavItem[]
   commands?: CommandDef[]
+  /** Query-time command sources for the palette (e.g. entity search). */
+  commandProviders?: CommandProvider[]
   entityTypes?: EntityTypeDef[]
   widgets?: WidgetDef[]
   workspaceTemplates?: WorkspaceTemplate[]
