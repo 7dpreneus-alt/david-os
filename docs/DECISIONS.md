@@ -133,3 +133,87 @@ Architecture Decision Records. Newest at the bottom. Format: context → decisio
 **Decision.** Memories are entities scored by keyword match × importance × recency behind a `retrieve(query, budget)` API. Embedding retrieval is a future drop-in behind the same API.
 
 **Consequences.** Zero infra for v1; retrieval quality is bounded by keyword matching until embeddings land; API stability protects the AI Kernel from that upgrade.
+
+---
+
+## ADR-012: Widget Engine — every dashboard card is a widget
+
+**Date:** 2026-07-09 · **Status:** Accepted
+
+**Context.** Mission Control must grow with new modules and support per-user arrangement. Hardcoded dashboard cards couple the home surface to every module.
+
+**Decision.** Widget **definitions** come from module manifests; widget **instances** (position, pinned, hidden, per-instance config, reserved size field) are persisted entities owned by a workspace. The dashboard is a generic widget host with move/pin/hide/configure affordances.
+
+**Consequences.** New modules light up the dashboard by declaring widgets — no dashboard edits. Resizing is future-proofed via the reserved `size` field rather than built now. Instance config validates against a widget-declared Zod schema.
+
+---
+
+## ADR-013: Workspace Engine with built-in templates
+
+**Date:** 2026-07-09 · **Status:** Accepted
+
+**Context.** One fixed dashboard can't serve different operating modes (running the company vs training vs personal life).
+
+**Decision.** Workspaces are entities that own a widget layout and preferences; switching loads both. Built-in templates: Home (default), CEO, Operations, Fitness, Finance, Development, Personal. Modules may ship workspace templates in manifests.
+
+**Consequences.** The same widget catalog composes into unlimited operating views; workspaces persist/export like all entities; per-workspace theme preference is possible without new plumbing.
+
+---
+
+## ADR-014: One Command Engine; the palette is the primary interface
+
+**Date:** 2026-07-09 · **Status:** Accepted
+
+**Context.** Navigation, quick actions, search, shortcuts, and future automation would otherwise each grow their own action lists (the Phase-0 palette already duplicated the sidebar).
+
+**Decision.** A single command registry (`core/commands`) holds everything runnable: module commands, auto-generated navigation, workspace switching, system commands. The ⌘K palette, keyboard shortcuts, the future Workflow Engine, and the AI-tool bridge all consume this one registry.
+
+**Consequences.** One place to discover/rank/execute actions; workflows and agents automate exactly what users can do by hand; no parallel action systems to drift.
+
+---
+
+## ADR-015: Notification Engine — one publish pipeline, durable history
+
+**Date:** 2026-07-09 · **Status:** Accepted
+
+**Context.** Ad-hoc toasts lose history; modules should not each invent notification handling.
+
+**Decision.** All modules publish through `notifications.publish()`. Notifications are entities: the same call persists to history, emits an event, and optionally shows a transient toast (sonner as transport). A notification center surfaces history with read/unread and per-module filters.
+
+**Consequences.** Nothing important vanishes with a toast; notification history is searchable like any entity; per-module preferences are a filter, not new APIs.
+
+---
+
+## ADR-016: Activity Timeline recorded from repository events
+
+**Date:** 2026-07-09 · **Status:** Accepted
+
+**Context.** "What happened?" must be answerable across the whole system, for the user and for AI context.
+
+**Decision.** A kernel recorder subscribes to the `entity.*` events repositories already emit and writes activity entities (verb, entity ref, actor user/agent, shallow diff). Activity and notification entities are excluded from recording to prevent recursion. Activities are indexed, so the timeline is searchable; `activity.for(entityId)` powers per-entity history.
+
+**Consequences.** Modules get audit history for free by using repositories; the Context and Memory Engines gain a temporal signal source; storage growth is bounded later by retention policies (a storage-layer concern).
+
+---
+
+## ADR-017: Workflow Engine specified now, implemented later
+
+**Date:** 2026-07-09 · **Status:** Accepted (implementation deferred)
+
+**Context.** Reusable multi-step workflows are a committed direction, but building them before the Command Engine and domain modules exist would invert dependencies.
+
+**Decision.** The architecture is fixed now — workflows are entities whose steps invoke registered commands or agent runs, with manual/event triggers (schedules later); runs persist as entities, failures notify, and everything lands on the timeline. `core/workflows` ships types/spec only until the post-v1 roadmap slot. **No feature code before then.**
+
+**Consequences.** Every earlier engine is built knowing workflows will sit on top (commands stay serializable/addressable by id); no throwaway automation code in v1.
+
+---
+
+## ADR-018: Context Engine separated from Memory Engine
+
+**Date:** 2026-07-09 · **Status:** Accepted (refines ADR-007/ADR-011)
+
+**Context.** "Memory" was conflating two jobs: storing knowledge and deciding what a model call should see.
+
+**Decision.** Memory stores information (memory entities + `retrieve()`). A distinct Context Engine (`core/context`) owns `assemble()`: it selects and budgets from the entity graph, memory retrievals, recent activity, workspace state, and conversation history, governed by per-agent `ContextPolicy` data. The AI Kernel calls the Context Engine before every model call and never builds prompts itself.
+
+**Consequences.** Retrieval quality and prompt construction evolve independently (embeddings upgrade Memory; selection policy upgrades Context); context policies become user-editable per agent; one place to audit exactly what an agent saw.
