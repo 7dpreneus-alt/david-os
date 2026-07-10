@@ -25,9 +25,15 @@ Engine skeletons (registries + types now; full UIs in later phases):
 
 **Exit criteria:** adding a stub module (manifest + one route + one command) requires zero core edits; all persistence flows through the adapter; every repository mutation produces an activity record.
 
-## Phase 2 — Core domain modules 🔄 (Tasks ✅ Projects ✅)
+## Phase 2 — Core domain modules 🔄 (Tasks ✅ Projects ✅ Goals ✅)
 
-Order: **Tasks ✅ → Projects ✅ → Notes → Goals → Documents.**
+Order: **Tasks ✅ → Projects ✅ → Goals ✅ → Notes → Documents.**
+
+A UX interlude between Projects and Goals delivered Mission Control v0
+(live widget host, template dashboard deleted), the registry-driven
+entity picker (`shared/entity-picker.tsx`), and the identity pass (new
+mark, favicon, branded loading/404). Every milestone now ends with a
+user-experience checkpoint before further engineering.
 
 Projects are orchestration entities: children (tasks, goals, notes,
 documents, future-module entities) are discovered via projectId

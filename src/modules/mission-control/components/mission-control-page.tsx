@@ -12,6 +12,7 @@ import { WidgetHost } from "./widget-host"
 const PREFERRED_ORDER = [
   'tasks.today',
   'projects.active',
+  'goals.progress',
   'projects.health',
   'projects.recent',
 ]
