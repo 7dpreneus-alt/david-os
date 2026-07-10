@@ -14,6 +14,7 @@ const PREFERRED_ORDER = [
   'projects.active',
   'goals.progress',
   'projects.health',
+  'notes.recent',
   'projects.recent',
 ]
 

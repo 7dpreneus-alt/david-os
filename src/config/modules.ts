@@ -4,6 +4,7 @@ import { missionControlModule } from '@/modules/mission-control/manifest'
 import { projectsModule } from '@/modules/projects/manifest'
 import { goalsModule } from '@/modules/goals/manifest'
 import { tasksModule } from '@/modules/tasks/manifest'
+import { notesModule } from '@/modules/notes/manifest'
 import { calendarModule } from '@/modules/calendar/manifest'
 import { settingsModule } from '@/modules/settings/manifest'
 
@@ -17,6 +18,7 @@ export const installedModules: ModuleManifest[] = [
   projectsModule,
   goalsModule,
   tasksModule,
+  notesModule,
   calendarModule,
   settingsModule,
 ]

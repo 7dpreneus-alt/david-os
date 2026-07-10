@@ -43,6 +43,7 @@ export const tasksCommandProvider: CommandProvider = (query) => {
         title: `Open task: ${task.title}`,
         icon: CheckSquare,
         group: 'Tasks',
+        keywords: [trimmed],
         run: ({ navigate }) => navigate(`/tasks?task=${task.id}`),
       },
     ]
@@ -52,6 +53,7 @@ export const tasksCommandProvider: CommandProvider = (query) => {
         title: `Complete task: ${task.title}`,
         icon: CheckCircle2,
         group: 'Tasks',
+        keywords: [trimmed],
         run: () => {
           void useTasksStore.getState().setStatus(task.id, 'done')
         },

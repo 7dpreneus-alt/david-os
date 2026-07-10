@@ -181,7 +181,10 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
                   return (
                     <CommandItem
                       key={item.id}
-                      value={item.title}
+                      // cmdk filters on this value; include keywords so
+                      // provider results matched on other fields (body,
+                      // tags, owner) stay visible.
+                      value={`${item.title} ${item.keywords?.join(" ") ?? ""}`}
                       onSelect={() => handleSelect(item.id)}
                     >
                       {Icon && <Icon className="mr-2 h-4 w-4" />}

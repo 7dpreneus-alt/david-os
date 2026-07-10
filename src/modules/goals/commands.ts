@@ -39,6 +39,7 @@ export const goalsCommandProvider: CommandProvider = (query) => {
         title: `Open goal: ${goal.title}`,
         icon: Target,
         group: 'Goals',
+        keywords: [trimmed],
         run: ({ navigate }) => navigate(`/goals?goal=${goal.id}`),
       },
     ]
@@ -48,6 +49,7 @@ export const goalsCommandProvider: CommandProvider = (query) => {
         title: `Mark achieved: ${goal.title}`,
         icon: Trophy,
         group: 'Goals',
+        keywords: [trimmed],
         run: () => {
           void useGoalsStore.getState().achieve(goal.id)
         },

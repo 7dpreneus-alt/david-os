@@ -59,13 +59,16 @@ export const projectsCommandProvider: CommandProvider = (query) => {
     .slice(0, MAX_MATCHES)
 
   return matches.flatMap((project): CommandDef[] => {
-    const commands: CommandDef[] = [openCommand(project)]
+    const commands: CommandDef[] = [
+      { ...openCommand(project), keywords: [trimmed] },
+    ]
     if (project.status !== 'completed') {
       commands.push({
         id: `projects.complete:${project.id}`,
         title: `Complete project: ${project.title}`,
         icon: CheckCircle2,
         group: 'Projects',
+        keywords: [trimmed],
         run: () => {
           void useProjectsStore.getState().complete(project.id)
         },
@@ -76,6 +79,7 @@ export const projectsCommandProvider: CommandProvider = (query) => {
       title: `Archive project: ${project.title}`,
       icon: Archive,
       group: 'Projects',
+      keywords: [trimmed],
       run: () => {
         void useProjectsStore.getState().archive(project.id)
       },
