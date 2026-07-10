@@ -25,9 +25,15 @@ Engine skeletons (registries + types now; full UIs in later phases):
 
 **Exit criteria:** adding a stub module (manifest + one route + one command) requires zero core edits; all persistence flows through the adapter; every repository mutation produces an activity record.
 
-## Phase 2 — Core domain modules 🔄 (Tasks ✅)
+## Phase 2 — Core domain modules 🔄 (Tasks ✅ Projects ✅)
 
-Order: **Tasks ✅ → Projects → Notes → Goals → Documents.**
+Order: **Tasks ✅ → Projects ✅ → Notes → Goals → Documents.**
+
+Projects are orchestration entities: children (tasks, goals, notes,
+documents, future-module entities) are discovered via projectId
+back-references, the central link store, and linkedIds; progress and
+health (on-track / at-risk / blocked / completed, with human-readable
+reasons) are derived from duck-typed completion signals — never stored.
 
 Kernel extensions landed with Tasks (domain-agnostic, for every future
 module): async-capable **command providers** (dynamic entity-backed palette

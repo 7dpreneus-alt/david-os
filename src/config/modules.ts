@@ -1,6 +1,7 @@
 import { registerModules, type ModuleManifest } from '@/core/modules'
 
 import { missionControlModule } from '@/modules/mission-control/manifest'
+import { projectsModule } from '@/modules/projects/manifest'
 import { tasksModule } from '@/modules/tasks/manifest'
 import { calendarModule } from '@/modules/calendar/manifest'
 import { settingsModule } from '@/modules/settings/manifest'
@@ -12,6 +13,7 @@ import { settingsModule } from '@/modules/settings/manifest'
  */
 export const installedModules: ModuleManifest[] = [
   missionControlModule,
+  projectsModule,
   tasksModule,
   calendarModule,
   settingsModule,
