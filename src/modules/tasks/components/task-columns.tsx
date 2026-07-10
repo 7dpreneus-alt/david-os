@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DataTableColumnHeader } from "@/components/shared/data-table/data-table-column-header"
+import { EntityChip } from "@/components/shared/entity-chip"
 import { cn } from "@/lib/utils"
 import { TASK_PRIORITIES, TASK_STATUSES, type Task, type TaskStatus } from "../types"
 
@@ -56,6 +57,7 @@ export const taskColumns: ColumnDef<Task>[] = [
         >
           {row.original.title}
         </span>
+        {row.original.projectId && <EntityChip id={row.original.projectId} />}
         {row.original.tags.map((tag) => (
           <Badge key={tag} variant="outline">
             {tag}

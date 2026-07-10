@@ -1,5 +1,6 @@
 "use client"
 
+import { Logo } from "@/components/logo"
 import { cn } from "@/lib/utils"
 
 interface LoadingSpinnerProps {
@@ -7,21 +8,22 @@ interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg"
 }
 
-export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: "h-4 w-4",
-    md: "h-8 w-8", 
-    lg: "h-12 w-12"
-  }
+const sizes = { sm: 20, md: 32, lg: 44 }
 
+/** Branded route-transition state: the DavidOS mark, pulsing quietly. */
+export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) {
   return (
-    <div className="flex items-center justify-center min-h-[200px]">
-      <div
-        className={cn(
-          "animate-spin rounded-full border-b-2 border-primary",
-          sizeClasses[size],
-          className
-        )}
+    <div
+      className={cn(
+        "flex min-h-[200px] items-center justify-center",
+        className
+      )}
+      role="status"
+      aria-label="Loading"
+    >
+      <Logo
+        size={sizes[size]}
+        className="animate-pulse text-muted-foreground motion-reduce:animate-none"
       />
     </div>
   )

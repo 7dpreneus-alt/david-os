@@ -1,29 +1,28 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
+
+import { Logo } from "@/components/logo"
+import { Button } from "@/components/ui/button"
 
 export function NotFoundError() {
   const navigate = useNavigate()
 
   return (
-    <div className='mx-auto flex min-h-dvh flex-col items-center justify-center gap-8 p-8 md:gap-12 md:p-16'>
-      <img
-        src='https://ui.shadcn.com/placeholder.svg'
-        alt='placeholder image'
-        className='aspect-video w-240 rounded-xl object-cover dark:brightness-[0.95] dark:invert'
-      />
-      <div className='text-center'>
-        <h1 className='mb-4 text-3xl font-bold'>404</h1>
-        <h2 className="mb-3 text-2xl font-semibold">Page Not Found</h2>
-        <p>The page you are looking for doesn't exist or has been moved to another location.</p>
-        <div className='mt-6 flex items-center justify-center gap-4 md:mt-8'>
-          <Button className='cursor-pointer' onClick={() => navigate('/dashboard')}>Go Back Home</Button>
-          <Button variant='outline' className='flex cursor-pointer items-center gap-1' onClick={() => navigate('#')}>
-            Contact Us
-          </Button>
-        </div>
+    <div className="mx-auto flex min-h-dvh flex-col items-center justify-center gap-6 p-8 text-center">
+      <Logo size={48} className="text-muted-foreground" />
+      <div>
+        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          404
+        </p>
+        <h1 className="mt-2 text-2xl font-semibold">This screen doesn't exist</h1>
+        <p className="mt-2 text-muted-foreground">
+          The page you're looking for isn't part of DavidOS — or it moved.
+        </p>
       </div>
+      <Button onClick={() => navigate("/dashboard")}>
+        Back to Mission Control
+      </Button>
     </div>
   )
 }

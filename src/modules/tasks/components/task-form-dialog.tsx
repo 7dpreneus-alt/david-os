@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { EntityPicker } from "@/components/shared/entity-picker"
 import { useTasksStore } from "../store"
 import { TASK_PRIORITIES, TASK_STATUSES, type Task } from "../types"
 
@@ -41,7 +42,10 @@ const formSchema = z.object({
   priority: z.enum(["low", "medium", "high", "urgent"]),
   dueDate: z.string().optional(),
   tags: z.string().optional(),
+  projectId: z.string().optional(),
 })
+
+const PROJECT_TYPES = ["project"]
 
 type FormValues = z.infer<typeof formSchema>
 
@@ -60,6 +64,7 @@ function toFormValues(task?: Task): FormValues {
     priority: task?.priority ?? "medium",
     dueDate: task?.dueDate ?? "",
     tags: task?.tags.join(", ") ?? "",
+    projectId: task?.projectId ?? "",
   }
 }
 
@@ -85,6 +90,7 @@ export function TaskFormDialog({ open, onOpenChange, task }: TaskFormDialogProps
       description: values.description || undefined,
       priority: values.priority,
       dueDate: values.dueDate || undefined,
+      projectId: values.projectId || undefined,
       tags,
     }
     if (task) {
@@ -187,6 +193,24 @@ export function TaskFormDialog({ open, onOpenChange, task }: TaskFormDialogProps
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="projectId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project</FormLabel>
+                  <FormControl>
+                    <EntityPicker
+                      types={PROJECT_TYPES}
+                      value={field.value || undefined}
+                      onChange={(id) => field.onChange(id ?? "")}
+                      placeholder="Link to a project…"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}

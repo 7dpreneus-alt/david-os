@@ -3,11 +3,12 @@ import { LayoutDashboard } from 'lucide-react'
 
 import type { ModuleManifest } from '@/core/modules'
 
-const Dashboard = lazy(() => import('@/app/dashboard/page'))
+const MissionControlPage = lazy(() => import('./components/mission-control-page'))
 
 /**
- * Placeholder over the template dashboard until Phase 3 rebuilds this as
- * the widget host over live data.
+ * Mission Control v0: hosts every widget registered in the kernel widget
+ * registry — live data only. Phase 3 layers workspace-owned instances
+ * (position/pin/hide/config) onto this host.
  */
 export const missionControlModule: ModuleManifest = {
   id: 'mission-control',
@@ -15,7 +16,7 @@ export const missionControlModule: ModuleManifest = {
   icon: LayoutDashboard,
   navGroup: 'Overview',
   order: 0,
-  routes: [{ path: '/dashboard', element: <Dashboard /> }],
+  routes: [{ path: '/dashboard', element: <MissionControlPage /> }],
   navItems: [
     { title: 'Mission Control', url: '/dashboard', icon: LayoutDashboard },
   ],
