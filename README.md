@@ -168,6 +168,7 @@ changes. `lib/env.ts` refuses `local` in preview and production.
 
 | File | Contents |
 |---|---|
+| [DEPLOYMENT.md](./DEPLOYMENT.md) | How to deploy to Vercel, and the two secrets you must supply |
 | [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) | Per-feature status, credentials required, known limitations |
 | [QA_EVIDENCE.md](./QA_EVIDENCE.md) | Exact commands run and their results |
 | [CONTROL_INVENTORY.md](./CONTROL_INVENTORY.md) | Every user-facing control, its handler, and its test |
