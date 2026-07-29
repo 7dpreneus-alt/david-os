@@ -3,6 +3,7 @@ import { requireUser } from '@/lib/auth';
 import { withUser } from '@/lib/db/session';
 import { serverEnv } from '@/lib/env';
 import { Badge, Card, CardTitle } from '@/components/ui/primitives';
+import { SignOutPanel } from '@/components/settings/sign-out-panel';
 import { PreferencesForm } from '@/components/settings/preferences-form';
 import { StarterDataPanel } from '@/components/settings/starter-data-panel';
 import { ExportPanel } from '@/components/settings/export-panel';
@@ -64,6 +65,8 @@ export default async function SettingsPage() {
         <h1 className="text-lg font-semibold tracking-tight">Settings</h1>
         <p className="mt-1 text-sm text-text-muted">Signed in as {user.email}.</p>
       </header>
+
+      <SignOutPanel />
 
       <PreferencesForm
         defaults={{

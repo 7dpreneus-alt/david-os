@@ -59,7 +59,7 @@ being represented by placeholder screens or navigation entries.
 | RLS on every public table | Implemented | Verified by test: 0 public tables (excluding the migration ledger) lack RLS. |
 | Cross-account isolation | Implemented | 9 integration tests prove read/insert/update/delete isolation and that sensitive tables reject the `authenticated` role. |
 | Sensitive tables server-only | Implemented | `calendar_connections`, `oauth_states`, `audit_events`, `mutation_history`, `job_runs`, `notification_deliveries`, `opportunity_source_records`, `calendar_sync_states` have RLS with no authenticated policy and revoked grants. |
-| Applied to hosted Supabase | **Not done** | A Supabase project (`wkgvjnwuuefbhtefjowx`, region us-east-1) was created for this work, but the migrations have only been applied to and verified against local PostgreSQL 16. They must be applied to the Supabase project before deployment: `MIGRATE_DATABASE_URL="$DIRECT_DATABASE_URL" pnpm db:migrate` (without `--compat`). |
+| Applied to hosted Supabase | Implemented | Applied to project `wkgvjnwuuefbhtefjowx` (us-east-1) through the Supabase management API. Verified there: **54 public tables, 0 without RLS, 0 without FORCE RLS, 181 policies, 0 tables granted to `anon`.** Supabase's own security advisors return no ERROR or WARN — only 8 INFO "RLS enabled, no policy" notices, which are exactly the server-only tables where that is the intended design. See QA_EVIDENCE.md. |
 
 ### Authentication
 

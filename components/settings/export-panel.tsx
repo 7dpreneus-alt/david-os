@@ -24,7 +24,9 @@ export function ExportPanel() {
       document.body.append(link);
       link.click();
       link.remove();
-      URL.revokeObjectURL(url);
+      // Revoking synchronously can cancel the download before the browser has
+      // finished reading the blob, so release it on the next macrotask.
+      setTimeout(() => URL.revokeObjectURL(url), 30_000);
       toast.success('Export downloaded.');
     } catch (error) {
       toast.error('The export could not be generated.');

@@ -44,6 +44,13 @@ async function signUp(page: Page, email: string): Promise<void> {
   await page.waitForURL('**/today');
 }
 
+/** Open the composer's optional-field panel if it is currently closed. */
+async function openPlanningDetails(page: Page): Promise<void> {
+  const toggle = page.getByRole('button', { name: 'Add planning details' });
+  if (await toggle.isVisible()) await toggle.click();
+  await expect(page.getByLabel('Estimated minutes')).toBeVisible();
+}
+
 async function addTask(page: Page, title: string): Promise<void> {
   await page.getByLabel('Task title').fill(title);
   await page.getByRole('button', { name: 'Add task' }).click();
@@ -140,7 +147,7 @@ test.describe('task lifecycle', () => {
     await signUp(page, uniqueEmail());
     await page.goto('/tasks');
 
-    await page.getByRole('button', { name: 'Add planning details' }).click();
+    await openPlanningDetails(page);
     await page.getByLabel('Task title').fill('Impossible durations');
     await page.getByLabel('Estimated minutes').fill('10');
     await page.getByLabel('Minimum viable minutes').fill('60');
@@ -196,15 +203,14 @@ test.describe('command center', () => {
     await signUp(page, uniqueEmail());
 
     await page.goto('/tasks');
-    await page.getByRole('button', { name: 'Add planning details' }).click();
     for (let index = 0; index < 5; index += 1) {
       const title = `Outcome candidate ${index}`;
+      await openPlanningDetails(page);
       await page.getByLabel('Task title').fill(title);
       await page.getByLabel('Estimated minutes').fill('15');
       await page.getByLabel('Consequence of delay (0–100)').fill('80');
       await page.getByRole('button', { name: 'Add task' }).click();
       await expect(taskCard(page, title)).toBeVisible();
-      await page.getByRole('button', { name: 'Add planning details' }).click();
     }
 
     await page.goto('/today');
@@ -243,9 +249,9 @@ test.describe('projects', () => {
     await expect(card.getByText(/Stalled/)).toBeVisible();
 
     await page.goto('/tasks');
-    await page.getByRole('button', { name: 'Add planning details' }).click();
+    await openPlanningDetails(page);
     await page.getByLabel('Task title').fill('Clear kitchen surfaces');
-    await page.getByLabel('Project').selectOption({ label: 'Apartment reset' });
+    await page.getByLabel('Project', { exact: true }).selectOption({ label: 'Apartment reset' });
     await page.getByRole('button', { name: 'Add task' }).click();
     await expect(taskCard(page, 'Clear kitchen surfaces')).toBeVisible();
 
@@ -257,6 +263,13 @@ test.describe('projects', () => {
 });
 
 test.describe('settings and data controls', () => {
+  test('sign out is reachable at every viewport', async ({ page }) => {
+    await signUp(page, uniqueEmail());
+    await page.goto('/settings');
+    await page.getByRole('button', { name: 'Sign out' }).click();
+    await page.waitForURL('**/login');
+  });
+
   test('preferences persist across a reload', async ({ page }) => {
     await signUp(page, uniqueEmail());
     await page.goto('/settings');

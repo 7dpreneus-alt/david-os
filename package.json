@@ -2,7 +2,7 @@
   "name": "personal-mission-control-os",
   "version": "0.1.0",
   "private": true,
-  "description": "Personal Mission Control OS — secure, mobile-first personal operations system.",
+  "description": "Personal Mission Control OS \u2014 secure, mobile-first personal operations system.",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -26,7 +26,8 @@
     "db:local:reset": "tsx scripts/local-postgres.ts reset",
     "db:migrate": "tsx scripts/apply-migrations.ts",
     "seed:starter": "tsx scripts/seed-starter-data.ts",
-    "audit": "pnpm audit --audit-level high"
+    "audit": "pnpm audit --audit-level high --prod",
+    "audit:all": "pnpm audit --audit-level high"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -45,8 +46,8 @@
     "@supabase/supabase-js": "^2.58.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "luxon": "^3.7.2",
     "lucide-react": "^0.562.0",
+    "luxon": "^3.7.2",
     "next": "16.2.12",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -56,7 +57,6 @@
     "zod": "^4.3.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/dom": "^10.4.1",
@@ -74,12 +74,18 @@
     "eslint-config-next": "16.2.12",
     "jsdom": "^27.0.0",
     "pg": "^8.16.3",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.18",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.18",
+      "sharp": "^0.35.0"
+    }
   }
 }

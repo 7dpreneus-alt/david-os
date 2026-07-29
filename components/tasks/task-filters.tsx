@@ -68,7 +68,7 @@ export function TaskFilters({
           </Field>
         </div>
 
-        <Field label="Status" htmlFor={`${baseId}-status`}>
+        <Field label="Filter by status" htmlFor={`${baseId}-status`}>
           <Select
             id={`${baseId}-status`}
             defaultValue={current.status}
@@ -85,7 +85,7 @@ export function TaskFilters({
           </Select>
         </Field>
 
-        <Field label="Project" htmlFor={`${baseId}-project`}>
+        <Field label="Filter by project" htmlFor={`${baseId}-project`}>
           <Select
             id={`${baseId}-project`}
             defaultValue={current.projectId}
