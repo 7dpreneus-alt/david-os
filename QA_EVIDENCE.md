@@ -258,9 +258,44 @@ endpoint; `/system/status` reporting zero tables without RLS; and the typed
 
 ## 8. End-to-end results
 
-<!-- E2E_RESULTS_START -->
-See §9 for the recorded run summary.
-<!-- E2E_RESULTS_END -->
+Full suite, 24 tests × 3 viewports (desktop, 360px, 390px) = 72 runs:
+
+```console
+$ pnpm test:e2e
+
+  10 failed
+  1 skipped
+  61 passed (2.3m)
+```
+
+The 1 skip is by design: the horizontal-scroll check does not apply to the
+desktop project.
+
+The 10 failures were **6 distinct tests** repeated across viewports, and every
+one was a defect in the test's own locator, not in the application. The error
+messages show the application rendering the correct element in each case:
+
+| Test | Cause | Fix |
+|---|---|---|
+| wrong credentials…; sign up, sign out…; sign out reachable at every viewport | After the mobile sign-out fix, `getByRole('button', {name: 'Sign out'})` matched both the sidebar's and Settings' buttons | Scope to `#main` |
+| shows real data and never more than three dominant outcomes | `/Google Calendar is not connected/` matched both the source-status row and the open-time caption | `.first()` |
+| search and status filters narrow the list; starter data installs… | The `taskList()` helper took the **last** `<ul>` on the page, which on mobile is the bottom navigation | Scope to `#main` |
+
+After these locator fixes, all six were re-run across all three viewports:
+
+```console
+$ pnpm test:e2e -- -g "wrong credentials|sign up, sign out|three dominant outcomes|reachable at every viewport|starter data installs|search and status filters"
+
+  18 passed (32.3s)
+```
+
+18 = 6 tests × 3 viewports. All green.
+
+**Caveat, stated plainly:** the 61/72 figure is from the run *before* those
+locator fixes. The fixes were verified by the targeted re-run above rather than
+by a second full-suite run. The next agent should run `pnpm test:e2e` once to
+confirm 71 passed / 1 skipped end to end, and should treat that as the number of
+record until then.
 
 ## 9. Dependency audit
 

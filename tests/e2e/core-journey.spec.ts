@@ -19,13 +19,16 @@ function uniqueEmail(): string {
 
 const PASSWORD = 'e2e-password-1234';
 
-/** The task list, excluding the toast layer. */
+/**
+ * The task list inside the main region. Scoping to `#main` matters: the mobile
+ * bottom navigation is also a list, and it comes last in the DOM.
+ */
 function taskList(page: Page) {
-  return page.getByRole('list').filter({ has: page.locator('li') }).last();
+  return page.locator('#main').getByRole('list').filter({ has: page.locator('li') }).last();
 }
 
 function taskCard(page: Page, title: string) {
-  return page.locator('li').filter({ hasText: title }).first();
+  return page.locator('#main').locator('li').filter({ hasText: title }).first();
 }
 
 /** The navigation that is actually rendered at the current viewport. */
@@ -42,6 +45,11 @@ async function signUp(page: Page, email: string): Promise<void> {
   if (await starter.isVisible()) await starter.uncheck();
   await page.getByRole('button', { name: 'Create account' }).click();
   await page.waitForURL('**/today');
+}
+
+/** Settings' own Sign out button, distinct from the desktop sidebar's. */
+function signOutButton(page: Page) {
+  return page.locator('#main').getByRole('button', { name: 'Sign out' });
 }
 
 /** Open the composer's optional-field panel if it is currently closed. */
@@ -72,7 +80,7 @@ test.describe('authentication', () => {
     await addTask(page, 'Survives sign out');
 
     await page.goto('/settings');
-    await page.getByRole('button', { name: 'Sign out' }).click();
+    await signOutButton(page).click();
     await page.waitForURL('**/login');
 
     // The session is genuinely gone: a protected route bounces back to login.
@@ -92,7 +100,7 @@ test.describe('authentication', () => {
     const email = uniqueEmail();
     await signUp(page, email);
     await page.goto('/settings');
-    await page.getByRole('button', { name: 'Sign out' }).click();
+    await signOutButton(page).click();
     await page.waitForURL('**/login');
 
     await page.getByLabel('Email').fill(email);
@@ -220,7 +228,9 @@ test.describe('command center', () => {
     await expect(page.locator('ol > li')).toHaveCount(3);
 
     // The calendar source is honestly reported as not connected.
-    await expect(page.getByText(/Google Calendar is not connected/)).toBeVisible();
+    await expect(
+      page.getByText(/Google Calendar is not connected/).first(),
+    ).toBeVisible();
     await expect(page.getByText('What should I do now?')).toBeVisible();
     await expect(page.getByText('Google Calendar has not been changed')).toBeVisible();
   });
@@ -266,7 +276,7 @@ test.describe('settings and data controls', () => {
   test('sign out is reachable at every viewport', async ({ page }) => {
     await signUp(page, uniqueEmail());
     await page.goto('/settings');
-    await page.getByRole('button', { name: 'Sign out' }).click();
+    await signOutButton(page).click();
     await page.waitForURL('**/login');
   });
 
