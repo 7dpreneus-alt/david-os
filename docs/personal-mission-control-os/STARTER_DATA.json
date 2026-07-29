@@ -1,0 +1,365 @@
+{
+  "schema_version": "1.0.0",
+  "starter_data": true,
+  "generated_on": "2026-07-28",
+  "instructions": {
+    "install_only_after_user_approval": true,
+    "label_all_records_as_starter": true,
+    "allow_bulk_removal": true,
+    "activate_deadlines_only_after_confirmation": true
+  },
+  "profile_defaults": {
+    "home_timezone": "America/New_York",
+    "locale": "en-US",
+    "planning_horizon_days": 14,
+    "default_transition_minutes": 10,
+    "default_travel_buffer_minutes": 20,
+    "contingency_percent": 15,
+    "daily_notification_cap": 6,
+    "quiet_hours_start": null,
+    "quiet_hours_end": null
+  },
+  "life_areas": [
+    {"key": "work", "name": "Work", "protected": true},
+    {"key": "home", "name": "Home", "protected": true},
+    {"key": "fitness", "name": "Fitness", "protected": true},
+    {"key": "learning", "name": "Learning", "protected": false},
+    {"key": "travel", "name": "Travel", "protected": false},
+    {"key": "finance_admin", "name": "Finance & Admin", "protected": true},
+    {"key": "business", "name": "Business & Opportunities", "protected": false},
+    {"key": "recovery", "name": "Rest & Recovery", "protected": true}
+  ],
+  "goals": [
+    {
+      "key": "goal-daily-control",
+      "life_area_key": "work",
+      "title": "Operate from a realistic daily plan",
+      "description": "Keep fixed commitments, available time, top outcomes, and recovery choices current.",
+      "protected": true,
+      "verification_status": "user_confirmed"
+    },
+    {
+      "key": "goal-home-functional",
+      "life_area_key": "home",
+      "title": "Keep the apartment clean, organized, and useful",
+      "protected": true,
+      "verification_status": "user_confirmed"
+    },
+    {
+      "key": "goal-fitness-consistency",
+      "life_area_key": "fitness",
+      "title": "Build consistent training without overloading the week",
+      "protected": true,
+      "verification_status": "user_confirmed"
+    },
+    {
+      "key": "goal-trading-education",
+      "life_area_key": "learning",
+      "title": "Complete structured paper-trading education",
+      "description": "Use one market, one setup, one risk unit, and one journal. No live-trading automation.",
+      "protected": false,
+      "verification_status": "user_confirmed"
+    }
+  ],
+  "projects": [
+    {
+      "key": "project-home-reset",
+      "goal_key": "goal-home-functional",
+      "life_area_key": "home",
+      "title": "Apartment operating reset",
+      "outcome": "Core rooms have a clear definition of done, recurring upkeep, and prioritized furnishing needs.",
+      "status": "active",
+      "budget_cents": null,
+      "currency_code": "USD"
+    },
+    {
+      "key": "project-second-bedroom",
+      "goal_key": "goal-home-functional",
+      "life_area_key": "home",
+      "title": "Decide the second-bedroom configuration",
+      "outcome": "Choose a reversible room use after comparing cost, privacy, lifestyle value, effort, flexibility, and income potential.",
+      "status": "proposed",
+      "budget_cents": null,
+      "currency_code": "USD"
+    },
+    {
+      "key": "project-houston-trip",
+      "life_area_key": "travel",
+      "title": "Houston wedding trip preparation",
+      "outcome": "Confirm travel dates and complete bookings, clothing, packing, documents, budget, event preparation, and return reset.",
+      "status": "proposed",
+      "budget_cents": null,
+      "currency_code": "USD"
+    },
+    {
+      "key": "project-paper-trading-study",
+      "goal_key": "goal-trading-education",
+      "life_area_key": "learning",
+      "title": "SPY paper-trading study track",
+      "outcome": "Complete structured study, chart review, mock orders, replay trades, and simulator gates before any separate decision about live trading.",
+      "status": "active",
+      "budget_cents": 0,
+      "currency_code": "USD"
+    }
+  ],
+  "tasks": [
+    {
+      "key": "task-connect-calendar",
+      "life_area_key": "work",
+      "title": "Connect and select Google Calendars",
+      "status": "ready",
+      "estimated_minutes": 15,
+      "minimum_minutes": 10,
+      "energy_requirement": "low",
+      "flexibility": "medium",
+      "consequence_level": 75,
+      "definition_of_done": "Google account is connected, selected calendars are visible, and a real read sync succeeds.",
+      "source": "starter"
+    },
+    {
+      "key": "task-verify-work-commitments",
+      "life_area_key": "work",
+      "title": "Verify recurring work commitments after Calendar sync",
+      "status": "ready",
+      "estimated_minutes": 20,
+      "energy_requirement": "medium",
+      "flexibility": "medium",
+      "consequence_level": 70,
+      "definition_of_done": "Fixed work events, travel buffers, and any recurring obligations are confirmed rather than assumed.",
+      "source": "starter"
+    },
+    {
+      "key": "task-laundry-baseline",
+      "project_key": "project-home-reset",
+      "life_area_key": "home",
+      "title": "Plan the next laundry cycle",
+      "status": "ready",
+      "estimated_minutes": 35,
+      "minimum_minutes": 15,
+      "energy_requirement": "low",
+      "flexibility": "high",
+      "consequence_level": 45,
+      "minimum_viable_definition": "Sort and start the most-needed load; schedule transfer and fold steps separately.",
+      "definition_of_done": "Needed loads are washed, dried, folded, and put away.",
+      "source": "starter"
+    },
+    {
+      "key": "task-humidity-followup",
+      "project_key": "project-home-reset",
+      "life_area_key": "home",
+      "title": "Inspect and document household humidity or moisture concern",
+      "status": "ready",
+      "estimated_minutes": 20,
+      "minimum_minutes": 10,
+      "energy_requirement": "low",
+      "flexibility": "medium",
+      "consequence_level": 70,
+      "definition_of_done": "Current condition, actions taken, next check date, and any maintenance-request need are recorded.",
+      "source": "starter"
+    },
+    {
+      "key": "task-room-decision-weights",
+      "project_key": "project-second-bedroom",
+      "life_area_key": "home",
+      "title": "Set second-bedroom decision weights",
+      "status": "ready",
+      "estimated_minutes": 25,
+      "energy_requirement": "medium",
+      "flexibility": "high",
+      "consequence_level": 35,
+      "definition_of_done": "Cost, income, privacy, lifestyle, effort, flexibility, and reversibility weights total 100 and assumptions are documented.",
+      "source": "starter"
+    },
+    {
+      "key": "task-confirm-houston-dates",
+      "project_key": "project-houston-trip",
+      "life_area_key": "travel",
+      "title": "Confirm Houston wedding trip dates and existing bookings",
+      "status": "ready",
+      "estimated_minutes": 20,
+      "minimum_minutes": 10,
+      "energy_requirement": "low",
+      "flexibility": "low",
+      "consequence_level": 90,
+      "definition_of_done": "Departure, return, wedding date, trip timezone, lodging, transport, and confirmed reservations are entered and marked user-confirmed.",
+      "verification_status": "unverified",
+      "confidence": 0.4,
+      "source": "starter"
+    },
+    {
+      "key": "task-trip-inventory",
+      "project_key": "project-houston-trip",
+      "life_area_key": "travel",
+      "title": "Inventory Houston clothing, travel essentials, and documents",
+      "status": "blocked",
+      "estimated_minutes": 45,
+      "minimum_minutes": 20,
+      "energy_requirement": "low",
+      "flexibility": "medium",
+      "consequence_level": 65,
+      "minimum_viable_definition": "List what is already owned and the highest-priority missing items.",
+      "definition_of_done": "Owned items, missing items, purchases, outfits, and documents are recorded by category.",
+      "blocked_by_task_key": "task-confirm-houston-dates",
+      "source": "starter"
+    },
+    {
+      "key": "task-trading-study-setup",
+      "project_key": "project-paper-trading-study",
+      "life_area_key": "learning",
+      "title": "Define the first SPY paper-trading study session",
+      "status": "ready",
+      "estimated_minutes": 45,
+      "minimum_minutes": 25,
+      "energy_requirement": "high",
+      "flexibility": "medium",
+      "consequence_level": 35,
+      "definition_of_done": "The session has one source, one concrete objective, one chart/practice activity, completion evidence, and next action.",
+      "source": "starter"
+    }
+  ],
+  "routines": [
+    {
+      "key": "routine-weekly-review",
+      "life_area_key": "work",
+      "title": "Weekly executive review",
+      "recurrence_rule": "FREQ=WEEKLY;BYDAY=SU",
+      "default_estimated_minutes": 45,
+      "minimum_minutes": 25,
+      "recovery_window_hours": 48,
+      "protected": true
+    },
+    {
+      "key": "routine-laundry",
+      "life_area_key": "home",
+      "title": "Laundry cycle",
+      "recurrence_rule": "FREQ=WEEKLY",
+      "default_estimated_minutes": 35,
+      "minimum_minutes": 15,
+      "recovery_window_hours": 72,
+      "protected": false
+    },
+    {
+      "key": "routine-home-reset",
+      "life_area_key": "home",
+      "title": "Home zone reset",
+      "recurrence_rule": "FREQ=WEEKLY;COUNT=1",
+      "default_estimated_minutes": 60,
+      "minimum_minutes": 20,
+      "recovery_window_hours": 72,
+      "protected": true,
+      "note": "Importer should replace the temporary recurrence with user-selected zone cadence during onboarding."
+    },
+    {
+      "key": "routine-workout",
+      "life_area_key": "fitness",
+      "title": "Workout session",
+      "recurrence_rule": "FREQ=WEEKLY;COUNT=3",
+      "target_frequency_per_week": 3,
+      "default_estimated_minutes": 60,
+      "minimum_minutes": 20,
+      "recovery_window_hours": 48,
+      "protected": true
+    },
+    {
+      "key": "routine-trading-study",
+      "life_area_key": "learning",
+      "title": "Focused paper-trading study",
+      "recurrence_rule": "FREQ=WEEKLY;COUNT=3",
+      "target_frequency_per_week": 3,
+      "default_estimated_minutes": 45,
+      "minimum_minutes": 25,
+      "recovery_window_hours": 72,
+      "protected": false
+    }
+  ],
+  "rooms": [
+    {"key": "room-kitchen", "name": "Kitchen", "current_use": "Kitchen", "desired_state": "Clear surfaces, clean sink, managed dishes, swept floor, needed supplies stocked"},
+    {"key": "room-bathroom", "name": "Bathroom", "current_use": "Bathroom", "desired_state": "Sanitized fixtures, clear counter, clean mirror, clean floor, trash removed"},
+    {"key": "room-bedroom", "name": "Primary Bedroom", "current_use": "Bedroom", "desired_state": "Bed reset, clothing contained, surfaces clear, floor accessible"},
+    {"key": "room-second-bedroom", "name": "Second Bedroom", "current_use": "Unused or mixed storage", "desired_state": "Purpose selected through decision framework"},
+    {"key": "room-living", "name": "Living Area", "current_use": "Living area", "desired_state": "Floor clear, surfaces controlled, furnishings intentionally placed"}
+  ],
+  "cleaning_zones": [
+    {"room_key": "room-kitchen", "name": "Kitchen reset", "default_minutes": 35, "minimum_minutes": 15, "definition_of_done": "Dishes handled, sink and priority surfaces cleaned, trash removed, and floor swept."},
+    {"room_key": "room-bathroom", "name": "Bathroom reset", "default_minutes": 30, "minimum_minutes": 15, "definition_of_done": "Toilet, sink, mirror, and priority surfaces are cleaned; trash is removed; floor is addressed."},
+    {"room_key": "room-bedroom", "name": "Bedroom reset", "default_minutes": 35, "minimum_minutes": 15, "definition_of_done": "Bed is reset, clothing is contained, main surfaces are clear, and walking space is open."},
+    {"room_key": "room-living", "name": "Floor and living-area reset", "default_minutes": 40, "minimum_minutes": 20, "definition_of_done": "Loose items are contained, floor is clear and cleaned, and high-use surfaces are reset."}
+  ],
+  "maintenance_records": [
+    {
+      "room_key": null,
+      "title": "Humidity and moisture follow-up",
+      "concern_type": "humidity_or_moisture",
+      "status": "monitoring",
+      "severity": 50,
+      "observed_at": null,
+      "next_follow_up_at": null,
+      "history": [],
+      "landlord_request_status": "not_evaluated",
+      "note": "This record manages observations and follow-up only. It does not diagnose mold or structural conditions."
+    }
+  ],
+  "room_use_options": [
+    {"room_key": "room-second-bedroom", "name": "Workspace", "estimated_cost_cents": null, "income_potential_score": 25, "privacy_score": 95, "lifestyle_benefit_score": 85, "setup_effort_score": 45, "flexibility_score": 75, "reversibility_score": 90},
+    {"room_key": "room-second-bedroom", "name": "Workout Room", "estimated_cost_cents": null, "income_potential_score": 10, "privacy_score": 95, "lifestyle_benefit_score": 80, "setup_effort_score": 50, "flexibility_score": 70, "reversibility_score": 90},
+    {"room_key": "room-second-bedroom", "name": "Guest Room", "estimated_cost_cents": null, "income_potential_score": 15, "privacy_score": 80, "lifestyle_benefit_score": 60, "setup_effort_score": 55, "flexibility_score": 55, "reversibility_score": 85},
+    {"room_key": "room-second-bedroom", "name": "Rental Room", "estimated_cost_cents": null, "income_potential_score": 90, "privacy_score": 20, "lifestyle_benefit_score": 30, "setup_effort_score": 75, "flexibility_score": 20, "reversibility_score": 45},
+    {"room_key": "room-second-bedroom", "name": "Hybrid Configuration", "estimated_cost_cents": null, "income_potential_score": 35, "privacy_score": 75, "lifestyle_benefit_score": 90, "setup_effort_score": 65, "flexibility_score": 95, "reversibility_score": 85}
+  ],
+  "fitness": {
+    "weekly_frequency_target": 3,
+    "default_gym_travel_minutes": 20,
+    "equipment": ["40 lb dumbbells", "12 lb weighted vest", "resistance bands"],
+    "scheduling_constraints": [
+      "Use only user-approved workout templates",
+      "Treat pain or injury constraints as blockers or reasons to reduce scope",
+      "Do not generate medical diagnosis or rehabilitation guidance"
+    ],
+    "workout_templates": [
+      {"key": "workout-gym-full", "name": "Full gym session", "location_type": "gym", "estimated_minutes": 60, "minimum_minutes": 30, "equipment": ["gym equipment"], "approved_structure": {}},
+      {"key": "workout-home-substitute", "name": "Home workout substitute", "location_type": "home", "estimated_minutes": 35, "minimum_minutes": 20, "equipment": ["40 lb dumbbells", "12 lb weighted vest", "resistance bands"], "approved_structure": {}},
+      {"key": "workout-minimum", "name": "Minimum viable workout", "location_type": "home", "estimated_minutes": 20, "minimum_minutes": 20, "equipment": ["user-approved available equipment"], "approved_structure": {}}
+    ]
+  },
+  "learning_sessions": [
+    {
+      "key": "learning-spy-session-1",
+      "task_key": "task-trading-study-setup",
+      "topic": "SPY setup recognition",
+      "source_name": "User-selected course or chart source",
+      "source_reference": null,
+      "objective": "Identify and annotate five examples that meet the single approved setup rules.",
+      "practice_activity": "Review charts and record why each example qualifies or fails.",
+      "completion_evidence": "Five annotated charts plus one written rule clarification.",
+      "next_action": "Create the next mock-order practice session.",
+      "review_date": null,
+      "financial_firewall": [
+        "Paper trading only",
+        "No rent, bill, emergency, borrowed, or tax money",
+        "No live-trading recommendation from Mission Control"
+      ]
+    }
+  ],
+  "trips": [
+    {
+      "key": "trip-houston-wedding",
+      "name": "Houston wedding trip",
+      "destination": "Houston, Texas",
+      "trip_timezone": "America/Chicago",
+      "starts_on": null,
+      "ends_on": null,
+      "date_verification": "unverified",
+      "booking_status": "unknown",
+      "budget_cents": null,
+      "currency_code": "USD",
+      "readiness_status": "blocked",
+      "notes": "Prior date details conflict. Confirm departure, return, wedding date, lodging, and transportation before generating deadlines."
+    }
+  ],
+  "notification_preferences": [
+    {"category": "approval", "in_app_enabled": true, "browser_enabled": false, "email_enabled": false, "minimum_urgency": "normal", "digest_mode": "immediate"},
+    {"category": "calendar_system", "in_app_enabled": true, "browser_enabled": false, "email_enabled": false, "minimum_urgency": "high", "digest_mode": "immediate"},
+    {"category": "recovery", "in_app_enabled": true, "browser_enabled": false, "email_enabled": false, "minimum_urgency": "normal", "digest_mode": "immediate"},
+    {"category": "opportunities", "in_app_enabled": true, "browser_enabled": false, "email_enabled": false, "minimum_urgency": "high", "digest_mode": "weekly"}
+  ]
+}
