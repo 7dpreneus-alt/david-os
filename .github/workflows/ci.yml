@@ -1,0 +1,144 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Quality gates never run against a real project's data.
+  NEXT_PUBLIC_APP_ENV: test
+  APP_URL: http://localhost:3000
+  AUTH_PROVIDER: local
+  AUTH_SESSION_SECRET: ci-only-session-secret-value-not-used-in-any-deployment
+  LOG_LEVEL: error
+  FEATURE_STARTER_DATA: 'true'
+  FEATURE_CALENDAR_READ: 'false'
+
+jobs:
+  quality:
+    name: Typecheck, lint, unit tests, database tests, build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mission_control
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mission_control
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mission_control
+      APPLY_SUPABASE_COMPAT: 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Supply-chain check runs first so a known-vulnerable dependency fails
+      # fast (SECURITY_AND_PRIVACY.md §17).
+      - name: Dependency audit
+        run: pnpm audit --audit-level high
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Apply migrations
+        run: pnpm db:migrate -- --compat
+
+      - name: Database and integration tests
+        run: pnpm test:integration
+
+      - name: Build
+        run: pnpm build
+        env:
+          BUILD_SHA: ${{ github.sha }}
+
+  e2e:
+    name: End-to-end smoke
+    runs-on: ubuntu-latest
+    needs: quality
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mission_control
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mission_control
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mission_control
+      APPLY_SUPABASE_COMPAT: 'true'
+      E2E_BASE_URL: http://localhost:3000
+      CI: 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Apply migrations
+        run: pnpm db:migrate -- --compat
+
+      - name: Build
+        run: pnpm build
+        env:
+          BUILD_SHA: ${{ github.sha }}
+
+      - name: End-to-end tests
+        run: pnpm test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

@@ -86,3 +86,13 @@ storybook-static
 
 # Deployment scripts (contain server-specific paths)
 *.env.production
+
+# Personal Mission Control OS
+/.next/
+/node_modules/
+/.pgdata/
+/playwright-report/
+/test-results/
+/coverage/
+.env.local
+.env*.local
